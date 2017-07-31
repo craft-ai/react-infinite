@@ -29,7 +29,14 @@ gulp.task('watch-develop-bundle', browserifyCreator(true, {development: true}, I
 gulp.task('release', ['cleanly-build-bundle'], function() {
   // Transpile CommonJS files to ES5 with React's tools.
   gulp.src(['./src/**/*.js', './src/**/*.jsx'])
-      .pipe(babel())
+      .pipe(babel({
+        'babelrc': false,
+        'presets': [
+          'react',
+          'flow'
+        ],
+        'plugins': ['transform-object-rest-spread']
+      }))
       .pipe(gulp.dest('build'));
 });
 
@@ -41,7 +48,7 @@ gulp.task('clean', function() {
 // in the development watch function as well.
 gulp.task('examples', function() {
   gulp.src('./examples/*.jsx')
-    .pipe(babel())
+    .pipe(babel({ 'babelrc': false }))
     .pipe(gulp.dest('examples'));
 });
 
